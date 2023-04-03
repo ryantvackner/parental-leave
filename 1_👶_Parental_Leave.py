@@ -26,7 +26,7 @@ def read_data():
     ls_loc = ["parental_leave.csv", "data_dictionary.csv"]
     df = []
     for loc in ls_loc:
-        df.append(pd.read_csv("https://raw.githubusercontent.com/ryantvackner/pizza-place/master/pizza_sales/" + loc, encoding = 'unicode_escape'))
+        df.append(pd.read_csv("https://raw.githubusercontent.com/ryantvackner/parental-leave/master/parental_company_leave/" + loc, encoding = 'unicode_escape'))
     return df
 
 
@@ -38,12 +38,14 @@ st.caption("Created by: Ryan T Vackner")
 # some text about data loading or something
 data_load_state = st.text('Loading data...')
 # read in dataframes
-df_order_details, df_orders, df_pizza_types, df_pizzas = read_data()
+df_parental_leave, df_dictionary = read_data()
+df_parental_leave = df_parental_leave[["Company", "Industry", "Paid Maternity Leave", "Unpaid Maternity Leave", "Paid Paternity Leave", "Unpaid Paternity Leave"]]
 # notify when data loading is done
 data_load_state.text('Loading data...Done!')
 
 
-
+# descriptive statistics
+df_parental_leave.describe()
 
 
 
