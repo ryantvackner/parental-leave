@@ -39,16 +39,25 @@ st.caption("Created by: Ryan T Vackner")
 data_load_state = st.text('Loading data...')
 # read in dataframes
 df_parental_leave, df_dictionary = read_data()
+# remove nan cols
 df_parental_leave = df_parental_leave[["Company", "Industry", "Paid Maternity Leave", "Unpaid Maternity Leave", "Paid Paternity Leave", "Unpaid Paternity Leave"]]
 # notify when data loading is done
 data_load_state.text('Loading data...Done!')
 
 
 # descriptive statistics
-df_parental_leave.describe()
+descriptive = df_parental_leave.describe()
+st.write(descriptive)
 
+# separate industry and sub insdustry
+df_parental_leave[['Industry','Sub-insdustry']] = df_parental_leave['Industry'].str.split(':',expand=True)
 
+# group by company
+df_parental_leave_gb_company = (df_parental_leave.groupby([df_parental_leave["Company"], df_parental_leave["Industry"]])["Paid Maternity Leave", "Unpaid Maternity Leave", "Paid Paternity Leave", "Unpaid Paternity Leave"].mean())
+df_parental_leave_gb_company = df_parental_leave_gb_company.reset_index()
 
-
+# group by industry
+df_parental_leave_gb_industry = (df_parental_leave.groupby([df_parental_leave["Industry"]])["Paid Maternity Leave", "Unpaid Maternity Leave", "Paid Paternity Leave", "Unpaid Paternity Leave"].mean())
+df_parental_leave_gb_industry = df_parental_leave_gb_industry.reset_index()
 
 
